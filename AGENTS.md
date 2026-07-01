@@ -15,7 +15,8 @@ Build a production-quality frontend project using React, TypeScript, Tailwind CS
 - Vite
 - Tailwind CSS
 - Axios
-- TanStack Query
+- useEffect/useState
+- React Router
 - Recharts
 - Gemini API
 - Vitest
