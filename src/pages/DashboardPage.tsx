@@ -1,8 +1,12 @@
+import { CryptoTable } from '@/components/crypto/CryptoTable'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { MetricCard } from '@/components/ui/MetricCard'
 import { SectionHeader } from '@/components/ui/SectionHeader'
+import { useCryptos } from '@/hooks/useCryptos'
 
 export function DashboardPage() {
+  const { cryptos, isLoading, error } = useCryptos()
+
   return (
     <MainLayout>
       <section id="overview" aria-labelledby="dashboard-title">
@@ -55,15 +59,29 @@ export function DashboardPage() {
           description="A snapshot of the leading assets by market capitalization."
         />
 
-        <div className="mt-5 grid min-h-72 place-items-center rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 px-6 text-center">
-          <div>
-            <p className="font-medium text-slate-200">
-              Market data is coming soon
-            </p>
-            <p className="mt-2 text-sm text-slate-500">
-              The cryptocurrency table will appear here.
-            </p>
-          </div>
+        <div className="mt-5">
+          {isLoading ? (
+            <div
+              className="grid min-h-72 place-items-center rounded-2xl border border-slate-800 bg-slate-900/40 text-center"
+              aria-live="polite"
+            >
+              <p className="text-sm font-medium text-slate-400">
+                Loading market data...
+              </p>
+            </div>
+          ) : null}
+
+          {error ? (
+            <div
+              role="alert"
+              className="rounded-2xl border border-rose-400/20 bg-rose-400/10 text-sm text-rose-300"
+              style={{ padding: '1.5rem' }}
+            >
+              {error}
+            </div>
+          ) : null}
+
+          {!isLoading && !error ? <CryptoTable cryptos={cryptos} /> : null}
         </div>
       </section>
     </MainLayout>
