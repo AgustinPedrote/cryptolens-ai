@@ -6,11 +6,15 @@ type MainLayoutProps = {
 
 export function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="main-layout">
-      <header className="main-layout__header">
-        <p className="main-layout__brand">CryptoLens AI</p>
+    <div className="flex min-h-screen flex-col bg-slate-950 text-slate-100">
+      <header className="border-b border-slate-800/80 bg-slate-950/80 px-6 py-5 backdrop-blur">
+        <p className="text-lg font-semibold tracking-tight text-white">
+          CryptoLens AI
+        </p>
       </header>
-      <main className="main-layout__content">{children}</main>
+      <main className="grid flex-1 place-items-center px-6 py-16">
+        {children}
+      </main>
     </div>
   )
 }

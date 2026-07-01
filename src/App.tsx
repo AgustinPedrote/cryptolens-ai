@@ -1,7 +1,5 @@
-import { DashboardPage } from './pages/DashboardPage'
+import { DashboardPage } from '@/pages/DashboardPage'
 
-function App() {
+export function App() {
   return <DashboardPage />
 }
-
-export default App
