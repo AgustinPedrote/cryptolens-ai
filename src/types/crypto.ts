@@ -33,3 +33,12 @@ export type CryptoDetail = {
     price_change_percentage_24h: number | null
   }
 }
+
+export type CryptoMarketChartResponse = {
+  prices: [number, number][]
+}
+
+export type CryptoPricePoint = {
+  timestamp: number
+  price: number
+}

@@ -1,5 +1,7 @@
+import { PriceChart } from '@/components/crypto/PriceChart'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { useCryptoDetail } from '@/hooks/useCryptoDetail'
+import { useCryptoMarketChart } from '@/hooks/useCryptoMarketChart'
 import {
   formatCompactUsd,
   formatPercentage,
@@ -12,6 +14,11 @@ import { Link, useParams } from 'react-router-dom'
 export function CryptoDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { crypto, isLoading, error } = useCryptoDetail(id ?? '')
+  const {
+    chartData,
+    isLoading: isChartLoading,
+    error: chartError,
+  } = useCryptoMarketChart(id ?? '')
 
   return (
     <MainLayout>
@@ -115,6 +122,31 @@ export function CryptoDetailPage() {
               </dd>
             </div>
           </dl>
+
+          {isChartLoading ? (
+            <div
+              className="mt-8 grid min-h-80 place-items-center rounded-2xl border border-slate-800 bg-slate-900/40"
+              aria-live="polite"
+            >
+              <p className="text-sm font-medium text-slate-400">
+                Loading price chart...
+              </p>
+            </div>
+          ) : null}
+
+          {chartError ? (
+            <div
+              role="alert"
+              className="mt-8 rounded-2xl border border-rose-400/20 bg-rose-400/10 text-sm text-rose-300"
+              style={{ padding: '1.5rem' }}
+            >
+              {chartError}
+            </div>
+          ) : null}
+
+          {!isChartLoading && !chartError ? (
+            <PriceChart chartData={chartData} />
+          ) : null}
 
           <section
             aria-labelledby="about-crypto-title"
