@@ -1,4 +1,5 @@
 import { AiAssistantPage } from '@/pages/AiAssistantPage'
+import { CryptoDetailPage } from '@/pages/CryptoDetailPage'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { LearnPage } from '@/pages/LearnPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
@@ -9,6 +10,7 @@ export function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
+        <Route path="/crypto/:id" element={<CryptoDetailPage />} />
         <Route path="/ai" element={<AiAssistantPage />} />
         <Route path="/learn" element={<LearnPage />} />
         <Route path="*" element={<NotFoundPage />} />

@@ -1,4 +1,4 @@
-import type { CryptoMarket } from '@/types/crypto'
+import type { CryptoDetail, CryptoMarket } from '@/types/crypto'
 import axios from 'axios'
 
 const cryptoApi = axios.create({
@@ -21,6 +21,28 @@ export async function getTopCryptos(
       price_change_percentage: '24h',
     },
   })
+
+  return response.data
+}
+
+export async function getCryptoById(
+  id: string,
+  signal?: AbortSignal,
+): Promise<CryptoDetail> {
+  const response = await cryptoApi.get<CryptoDetail>(
+    `/coins/${encodeURIComponent(id)}`,
+    {
+      signal,
+      params: {
+        localization: false,
+        tickers: false,
+        market_data: true,
+        community_data: false,
+        developer_data: false,
+        sparkline: false,
+      },
+    },
+  )
 
   return response.data
 }

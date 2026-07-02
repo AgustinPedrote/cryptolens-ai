@@ -30,3 +30,13 @@ export function formatCompactUsd(value: number | null): string {
 export function formatPercentage(value: number | null): string {
   return value === null ? '—' : `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`
 }
+
+export function stripHtml(value: string): string {
+  if (!value) {
+    return ''
+  }
+
+  const parsedHtml = new DOMParser().parseFromString(value, 'text/html')
+
+  return parsedHtml.body.textContent?.trim() ?? ''
+}

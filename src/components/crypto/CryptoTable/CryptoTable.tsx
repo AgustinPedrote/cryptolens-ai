@@ -5,12 +5,30 @@ import {
   formatUsd,
 } from '@/utils/formatters'
 import clsx from 'clsx'
+import type { KeyboardEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type CryptoTableProps = {
   cryptos: CryptoMarket[]
 }
 
 export function CryptoTable({ cryptos }: CryptoTableProps) {
+  const navigate = useNavigate()
+
+  function navigateToCrypto(id: string) {
+    navigate(`/crypto/${encodeURIComponent(id)}`)
+  }
+
+  function handleRowKeyDown(
+    event: KeyboardEvent<HTMLTableRowElement>,
+    id: string,
+  ) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      navigateToCrypto(id)
+    }
+  }
+
   return (
     <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/70">
       <table className="min-w-full text-left text-sm">
@@ -40,7 +58,12 @@ export function CryptoTable({ cryptos }: CryptoTableProps) {
           {cryptos.map((crypto) => (
             <tr
               key={crypto.id}
-              className="transition-colors hover:bg-slate-800/40"
+              role="link"
+              tabIndex={0}
+              aria-label={`View ${crypto.name} details`}
+              onClick={() => navigateToCrypto(crypto.id)}
+              onKeyDown={(event) => handleRowKeyDown(event, crypto.id)}
+              className="cursor-pointer transition-colors hover:bg-slate-800/40 focus-visible:bg-slate-800/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-400"
             >
               <td className="px-5 py-4 text-slate-500">
                 {crypto.market_cap_rank ?? '—'}
