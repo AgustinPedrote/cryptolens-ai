@@ -1,11 +1,30 @@
 import { CryptoTable } from '@/components/crypto/CryptoTable'
+import { CryptoTableControls } from '@/components/crypto/CryptoTableControls'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { MetricCard } from '@/components/ui/MetricCard'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { useCryptos } from '@/hooks/useCryptos'
+import { useMemo, useState } from 'react'
 
 export function DashboardPage() {
-  const { cryptos, isLoading, error } = useCryptos()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [perPage, setPerPage] = useState(10)
+  const { cryptos, isLoading, error, lastUpdated, refetch } =
+    useCryptos(perPage)
+
+  const filteredCryptos = useMemo(() => {
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+
+    if (!normalizedSearchTerm) {
+      return cryptos
+    }
+
+    return cryptos.filter(
+      (crypto) =>
+        crypto.name.toLowerCase().includes(normalizedSearchTerm) ||
+        crypto.symbol.toLowerCase().includes(normalizedSearchTerm),
+    )
+  }, [cryptos, searchTerm])
 
   return (
     <MainLayout>
@@ -32,7 +51,7 @@ export function DashboardPage() {
           label="Global market cap"
           value="$2.41T"
           detail="+2.4% in the last 24h"
-          tone="cyan"
+          tone="amber"
         />
         <MetricCard
           label="24h volume"
@@ -60,9 +79,19 @@ export function DashboardPage() {
         />
 
         <div className="mt-5">
+          <CryptoTableControls
+            searchTerm={searchTerm}
+            perPage={perPage}
+            isLoading={isLoading}
+            lastUpdated={lastUpdated}
+            onSearchTermChange={setSearchTerm}
+            onPerPageChange={setPerPage}
+            onRefresh={refetch}
+          />
+
           {isLoading ? (
             <div
-              className="grid min-h-72 place-items-center rounded-2xl border border-slate-800 bg-slate-900/40 text-center"
+              className="mt-4 grid min-h-72 place-items-center rounded-2xl border border-slate-800 bg-slate-900/40 text-center"
               aria-live="polite"
             >
               <p className="text-sm font-medium text-slate-400">
@@ -74,14 +103,31 @@ export function DashboardPage() {
           {error ? (
             <div
               role="alert"
-              className="rounded-2xl border border-rose-400/20 bg-rose-400/10 text-sm text-rose-300"
+              className="mt-4 rounded-2xl border border-rose-400/20 bg-rose-400/10 text-sm text-rose-300"
               style={{ padding: '1.5rem' }}
             >
               {error}
             </div>
           ) : null}
 
-          {!isLoading && !error ? <CryptoTable cryptos={cryptos} /> : null}
+          {!isLoading && !error && filteredCryptos.length > 0 ? (
+            <div className="mt-4">
+              <CryptoTable cryptos={filteredCryptos} />
+            </div>
+          ) : null}
+
+          {!isLoading && !error && filteredCryptos.length === 0 ? (
+            <div className="mt-4 grid min-h-48 place-items-center rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 text-center">
+              <div style={{ padding: '1.5rem' }}>
+                <p className="font-medium text-slate-200">
+                  No cryptocurrencies found
+                </p>
+                <p className="mt-2 text-sm text-slate-500">
+                  Try a different name or symbol.
+                </p>
+              </div>
+            </div>
+          ) : null}
         </div>
       </section>
     </MainLayout>

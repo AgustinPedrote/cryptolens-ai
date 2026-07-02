@@ -4,10 +4,11 @@ type MetricCardProps = {
   label: string
   value: string
   detail: string
-  tone?: 'cyan' | 'emerald' | 'violet'
+  tone?: 'amber' | 'cyan' | 'emerald' | 'violet'
 }
 
 const toneStyles = {
+  amber: 'bg-amber-400',
   cyan: 'bg-cyan-400',
   emerald: 'bg-emerald-400',
   violet: 'bg-violet-400',
