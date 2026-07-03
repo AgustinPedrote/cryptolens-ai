@@ -101,6 +101,34 @@ export function AiAssistantBox() {
         </div>
       ) : null}
 
+      {isLoading ? (
+        <section
+          aria-labelledby="ai-loading-title"
+          aria-busy="true"
+          role="status"
+          className="mt-4 rounded-2xl border border-slate-800 bg-slate-900/40"
+          style={{ padding: '1.5rem' }}
+        >
+          <h2
+            id="ai-loading-title"
+            className="text-lg font-semibold text-white"
+          >
+            CryptoLens AI
+          </h2>
+          <div className="mt-3 flex items-center gap-3 text-sm text-slate-300">
+            <span
+              aria-hidden="true"
+              className="size-4 shrink-0 animate-spin rounded-full border-2 border-slate-700 border-t-cyan-400"
+            />
+            <p>Analyzing your crypto question...</p>
+          </div>
+          <p className="mt-4 border-t border-slate-800 pt-4 text-xs text-slate-500">
+            This response is for educational purposes and is not financial
+            advice.
+          </p>
+        </section>
+      ) : null}
+
       {answer ? (
         <section
           aria-labelledby="ai-answer-title"
