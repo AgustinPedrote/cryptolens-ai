@@ -1,4 +1,5 @@
 import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer'
+import { aiSuggestedQuestions } from '@/constants/aiSuggestedQuestions'
 import { useAiAssistant } from '@/hooks/useAiAssistant'
 import clsx from 'clsx'
 import type { FormEvent } from 'react'
@@ -40,6 +41,36 @@ export function AiAssistantBox() {
           disabled={isLoading}
           className="mt-3 w-full resize-y rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm leading-6 text-white outline-none transition-colors placeholder:text-slate-600 focus:border-cyan-400 disabled:cursor-not-allowed disabled:opacity-70"
         />
+
+        <div className="mt-4">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Suggested questions
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {aiSuggestedQuestions.map((suggestedQuestion) => {
+              const isSelected = question === suggestedQuestion
+
+              return (
+                <button
+                  key={suggestedQuestion}
+                  type="button"
+                  onClick={() => setQuestion(suggestedQuestion)}
+                  disabled={isLoading}
+                  className={clsx(
+                    'rounded-full border px-3 py-2 text-left text-xs leading-5 transition-colors',
+                    isLoading && 'cursor-not-allowed opacity-60',
+                    !isLoading && 'cursor-pointer',
+                    isSelected
+                      ? 'border-cyan-400/60 bg-cyan-400/10 text-cyan-300'
+                      : 'border-slate-700 bg-slate-950/60 text-slate-400 hover:border-slate-600 hover:text-slate-200',
+                  )}
+                >
+                  {suggestedQuestion}
+                </button>
+              )
+            })}
+          </div>
+        </div>
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-slate-500">
