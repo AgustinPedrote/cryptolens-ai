@@ -1,3 +1,4 @@
+import { AiAssistantBox } from '@/components/ai/AiAssistantBox'
 import { MainLayout } from '@/components/layout/MainLayout'
 
 export function AiAssistantPage() {
@@ -14,9 +15,12 @@ export function AiAssistantPage() {
           Explore crypto with AI
         </h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">
-          Your crypto research assistant will be available here soon.
+          Ask educational questions about crypto, blockchain, Web3, DeFi, and
+          real-world assets.
         </p>
       </section>
+
+      <AiAssistantBox />
     </MainLayout>
   )
 }
