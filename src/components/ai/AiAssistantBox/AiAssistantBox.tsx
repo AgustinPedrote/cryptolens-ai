@@ -1,3 +1,4 @@
+import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer'
 import { useAiAssistant } from '@/hooks/useAiAssistant'
 import clsx from 'clsx'
 import type { FormEvent } from 'react'
@@ -78,9 +79,7 @@ export function AiAssistantBox() {
           <h2 id="ai-answer-title" className="text-lg font-semibold text-white">
             CryptoLens AI
           </h2>
-          <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-slate-300">
-            {answer}
-          </p>
+          <MarkdownRenderer content={answer} className="mt-3" />
           <p className="mt-4 border-t border-slate-800 pt-4 text-xs text-slate-500">
             This response is for educational purposes and is not financial
             advice.
