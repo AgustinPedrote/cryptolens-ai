@@ -11,6 +11,11 @@ const compactUsdFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
 })
 
+type FormatPercentageOptions = {
+  showSign?: boolean
+  fractionDigits?: number
+}
+
 export function formatUsd(value: number | null): string {
   if (value === null) {
     return '—'
@@ -27,8 +32,17 @@ export function formatCompactUsd(value: number | null): string {
   return value === null ? '—' : compactUsdFormatter.format(value)
 }
 
-export function formatPercentage(value: number | null): string {
-  return value === null ? '—' : `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`
+export function formatPercentage(
+  value: number | null,
+  { showSign = true, fractionDigits = 2 }: FormatPercentageOptions = {},
+): string {
+  if (value === null) {
+    return '—'
+  }
+
+  const sign = showSign && value >= 0 ? '+' : ''
+
+  return `${sign}${value.toFixed(fractionDigits)}%`
 }
 
 export function stripHtml(value: string): string {

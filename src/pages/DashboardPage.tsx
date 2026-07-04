@@ -1,7 +1,7 @@
 import { CryptoTable } from '@/components/crypto/CryptoTable'
 import { CryptoTableControls } from '@/components/crypto/CryptoTableControls'
+import { MarketOverviewCards } from '@/components/crypto/MarketOverviewCards'
 import { MainLayout } from '@/components/layout/MainLayout'
-import { MetricCard } from '@/components/ui/MetricCard'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { useCryptos } from '@/hooks/useCryptos'
 import { useMemo, useState } from 'react'
@@ -43,29 +43,7 @@ export function DashboardPage() {
         </p>
       </section>
 
-      <section
-        aria-label="Market metrics"
-        className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        <MetricCard
-          label="Global market cap"
-          value="$2.41T"
-          detail="+2.4% in the last 24h"
-          tone="amber"
-        />
-        <MetricCard
-          label="24h volume"
-          value="$98.7B"
-          detail="+8.1% compared with yesterday"
-          tone="emerald"
-        />
-        <MetricCard
-          label="BTC dominance"
-          value="52.3%"
-          detail="-0.3% in the last 24h"
-          tone="violet"
-        />
-      </section>
+      <MarketOverviewCards />
 
       <section
         id="market"

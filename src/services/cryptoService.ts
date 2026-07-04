@@ -4,7 +4,22 @@ import type {
   CryptoMarketChartResponse,
   CryptoPricePoint,
 } from '@/types/crypto'
+import type { GlobalMarket } from '@/types/market'
 import axios from 'axios'
+
+type GlobalMarketResponse = {
+  data: {
+    total_market_cap: {
+      usd: number
+    }
+    total_volume: {
+      usd: number
+    }
+    market_cap_percentage: {
+      btc: number
+    }
+  }
+}
 
 const cryptoApi = axios.create({
   baseURL: 'https://api.coingecko.com/api/v3',
@@ -28,6 +43,20 @@ export async function getTopCryptos(
   })
 
   return response.data
+}
+
+export async function getGlobalMarket(
+  signal?: AbortSignal,
+): Promise<GlobalMarket> {
+  const response = await cryptoApi.get<GlobalMarketResponse>('/global', {
+    signal,
+  })
+
+  return {
+    totalMarketCapUsd: response.data.data.total_market_cap.usd,
+    totalVolumeUsd: response.data.data.total_volume.usd,
+    btcDominance: response.data.data.market_cap_percentage.btc,
+  }
 }
 
 export async function getCryptoMarketChart(
