@@ -1,6 +1,9 @@
 import { GoogleGenAI } from '@google/genai'
 
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY?.trim()
+const maxTokensFinishReason = 'MAX_TOKENS'
+const shortenedResponseNotice =
+  'Note: The response was shortened because it reached the model output limit.'
 
 const systemInstruction = `
 You are CryptoLens AI, an educational assistant focused on cryptocurrency,
@@ -36,13 +39,21 @@ export async function askCryptoAssistant(question: string): Promise<string> {
       contents: normalizedQuestion,
       config: {
         systemInstruction,
-        maxOutputTokens: 600,
+        maxOutputTokens: 2000,
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
       },
     })
     const answer = response.text?.trim()
+    const finishReason = response.candidates?.[0]?.finishReason
 
     if (!answer) {
       throw new Error('Empty Gemini response')
+    }
+
+    if (finishReason === maxTokensFinishReason) {
+      return `${answer}\n\n${shortenedResponseNotice}`
     }
 
     return answer
